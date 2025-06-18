@@ -66,7 +66,7 @@ reg_input = reg_input[rating_model.feature_names_in_]
 
 predicted_rating = predict_rating(rating_model, reg_input)
 
-st.subheader("⭐ Predicted Rating")
+st.subheader("⭐ Predicted Rating based on user, attractions, transaction features")
 st.write(round(predicted_rating, 2))
 
 # --- Visit Mode Prediction ---
@@ -87,7 +87,7 @@ mode_mapping = visit_df.set_index('VisitModeId')['VisitMode'].to_dict()
 predicted_mode_id = predict_mode(classification_model, class_input)
 predicted_mode = mode_mapping.get(predicted_mode_id, "Unknown")
 
-st.subheader("🧭 Predicted Visit Mode")
+st.subheader("🧭 Predicted Visit Mode Based on past trends")
 st.write(predicted_mode)
 
 # ------------------------
