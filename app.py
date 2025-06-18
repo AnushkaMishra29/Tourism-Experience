@@ -90,3 +90,17 @@ predicted_mode = mode_mapping.get(predicted_mode_id, "Unknown")
 st.subheader("🧭 Predicted Visit Mode")
 st.write(predicted_mode)
 
+# ------------------------
+# Section 4: Recommendations & Visuals
+# ------------------------
+
+# --- Recommender System ---
+st.subheader("🎯 Personalized Recommendations")
+if user_id in user_item_matrix.index:
+    hybrid_recs = hybrid_recommendation(user_id, user_item_matrix, attraction_data, alpha=0.55)
+    st.success("Top Recommendations Just for You")
+    st.dataframe(hybrid_recs)
+else:
+    st.warning(f"No past data available for user {user_id} to generate recommendations.")
+
+
