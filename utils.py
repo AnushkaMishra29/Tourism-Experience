@@ -1,4 +1,3 @@
-
 from turtle import st
 import pandas as pd
 import numpy as np
@@ -64,8 +63,18 @@ def recommend_content_based(user_id, user_item_matrix, attraction_data):
     liked_attractions = user_item_matrix.loc[user_id][user_item_matrix.loc[user_id] >= 4].index.tolist()
     if not liked_attractions:
         return attraction_data[['Attraction']].head(5)
+    
+    liked_indices = []
+    for att in liked_attractions:
+        if att in indices.index:
+            val = indices.loc[att]
+            # If multiple matches (Series), take first; else directly
+            liked_indices.append(int(val.iloc[0] if isinstance(val, pd.Series) else val))
 
-    liked_indices = [indices[att] for att in liked_attractions if att in indices]
+    if not liked_indices:
+        return attraction_data[['Attraction']].head(5)
+    
+
     sim_scores = linear_kernel(tfidf_matrix[liked_indices], tfidf_matrix).mean(axis=0)
     top_indices = sim_scores.argsort()[::-1]
     recommended_indices = [i for i in top_indices if attraction_data['Attraction'][i] not in liked_attractions]
@@ -91,11 +100,11 @@ def hybrid_recommendation(user_id, user_item_matrix, attraction_data, alpha=0.55
 
 # Visualizations data
 def plot_visualizations(df):
-    top_attractions = df['AttractionName'].value_counts().head(10)
-    fig1, ax1 = plt.subplots()
-    sns.barplot(y=top_attractions.index, x=top_attractions.values, ax=ax1)
-    ax1.set_title("Top 10 Attractions")
-    st.pyplot(fig1)
+    #top_attractions = df['AttractionName'].value_counts().head(10)
+    #fig1, ax1 = plt.subplots()
+    #sns.barplot(y=top_attractions.index, x=top_attractions.values, ax=ax1)
+    #ax1.set_title("Top 10 Attractions")
+    #st.pyplot(fig1)
 
     top_regions = df['Region'].value_counts().head(10)
     fig2, ax2 = plt.subplots()
